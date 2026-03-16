@@ -85,6 +85,27 @@ flowchart TD
 
 ---
 
+## Screenshots
+
+### Admin Control Room
+| Dashboard & Heatmap | Bid Activity Charts |
+|---|---|
+| ![Admin Dashboard](./screenshots/admin-dashboard.png) | ![Bid Charts](./screenshots/admin-charts.png) |
+
+### Bidder Experience
+| Live Arena | Personal Dashboard |
+|---|---|
+| ![Live Arena](./screenshots/bidder-arena.png) | ![Dashboard](./screenshots/bidder-dashboard.png) |
+
+### Auth & Bid Modal
+| Login Page | Bid Modal |
+|---|---|
+| ![Login](./screenshots/auth.png) | ![Bid Modal](./screenshots/bid-modal.png) |
+
+> 📁 Drop your screenshots into a `/screenshots` folder in the project root and rename them to match the filenames above, or replace the paths with your own.
+
+---
+
 ## Setup
 
 ### Prerequisites
