@@ -1,0 +1,7 @@
+{
+  "name": "Remix: BidForge",
+  "description": "A real-time, credit-based competitive auction platform with anti-sniping and AI-powered bidding strategies.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

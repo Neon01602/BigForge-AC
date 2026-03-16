@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and credit balance",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "bidder"] },
+        "credits": { "type": "number", "description": "Available credits" },
+        "lockedCredits": { "type": "number", "description": "Credits currently tied up in active bids" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role", "credits", "lockedCredits"]
+    },
+    "Auction": {
+      "title": "Auction",
+      "description": "Auction item details",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "minBid": { "type": "number" },
+        "currentBid": { "type": "number" },
+        "currentBidderId": { "type": "string" },
+        "currentBidderName": { "type": "string" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "endTime": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "active", "closed"] },
+        "winnerId": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "minBid", "startTime", "endTime", "status"]
+    },
+    "Bid": {
+      "title": "Bid",
+      "description": "A single bid entry",
+      "type": "object",
+      "properties": {
+        "auctionId": { "type": "string" },
+        "bidderId": { "type": "string" },
+        "bidderName": { "type": "string" },
+        "amount": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["auctionId", "bidderId", "amount", "timestamp"]
+    },
+    "CreditTransaction": {
+      "title": "Credit Transaction",
+      "description": "History of credit changes",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["topup", "lock", "unlock", "deduct", "revoke"] },
+        "description": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "User",
+      "description": "User profiles and balances"
+    },
+    "auctions": {
+      "schema": "Auction",
+      "description": "Auction listings"
+    },
+    "bids": {
+      "schema": "Bid",
+      "description": "Bid history"
+    },
+    "transactions": {
+      "schema": "CreditTransaction",
+      "description": "Credit ledger"
+    }
+  }
+}

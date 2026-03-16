@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, email, displayName, role, credits, lockedCredits, createdAt
+    //
+    // Collection: auctions
+    // Fields: title, description, imageUrl, minBid, currentBid, currentBidderId, currentBidderName, startTime, endTime, status, winnerId, createdBy, createdAt
+    //
+    // Collection: bids
+    // Fields: auctionId, bidderId, bidderName, amount, timestamp
+    //
+    // Collection: transactions
+    // Fields: userId, amount, type, description, timestamp
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         request.auth.token.email == "ahmadabdullah007860@gmail.com");
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'role', 'credits', 'lockedCredits']) &&
+             data.role in ['admin', 'bidder'] &&
+             data.credits is number &&
+             data.lockedCredits is number;
+    }
+
+    // Users
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isAdmin() || (isOwner(userId) && request.resource.data.role == resource.data.role);
+    }
+
+    // Auctions
+    match /auctions/{auctionId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin();
+      allow update: if isAuthenticated(); // Bidders update currentBid/bidder info via transactions, but we need to allow the update
+      allow delete: if isAdmin();
+    }
+
+    // Bids
+    match /bids/{bidId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+    }
+
+    // Transactions
+    match /transactions/{txId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated();
+    }
+
+    // Notifications
+    match /notifications/{notifId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAdmin();
+    }
+  }
+}
