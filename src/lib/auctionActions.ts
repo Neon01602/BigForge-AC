@@ -47,11 +47,17 @@ export async function placeBid(auctionId: string, bidderId: string, bidderName: 
           "You cannot bid again until someone outbids you."
         );
       }
+      
 
       // 3. Check Credits
-      const availableCredits = bidderData.credits - bidderData.lockedCredits;
-      if (availableCredits < amount) {
-        throw new Error("Insufficient credits");
+      const newLockedTotal = bidderData.lockedCredits + amount;
+      if (newLockedTotal > bidderData.credits) {
+        const available = Math.max(0, bidderData.credits - bidderData.lockedCredits);
+        throw new Error(
+          `Insufficient credits. You need ${amount.toFixed(2)} credits for this bid, ` +
+          `but only ${available.toFixed(2)} are available ` +
+          `(Total: ${bidderData.credits.toFixed(2)}, Already locked: ${bidderData.lockedCredits.toFixed(2)}).`
+        );
       }
 
       // 4. Bid Behaviour Flags (Anti-Spam)
@@ -79,7 +85,7 @@ export async function placeBid(auctionId: string, bidderId: string, bidderName: 
       // 6. Lock Current Bidder's Credits — merged with flag if needed
       // FIX: single update call so flag isn't overwritten by credits update
       transaction.update(bidderRef, {
-        lockedCredits: bidderData.lockedCredits + amount,
+        lockedCredits: newLockedTotal,
         ...(shouldFlag && {
           isFlagged: true,
           flagReason: 'Excessive bidding detected (More than 3 bids in 10s)'
