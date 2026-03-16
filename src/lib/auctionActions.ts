@@ -41,6 +41,12 @@ export async function placeBid(auctionId: string, bidderId: string, bidderName: 
       if (amount <= (auctionData.currentBid || auctionData.minBid)) {
         throw new Error("Bid must be higher than current bid");
       }
+      if (auctionData.currentBidderId === bidderId) {
+        throw new Error(
+          "You are already the highest bidder on this auction. " +
+          "You cannot bid again until someone outbids you."
+        );
+      }
 
       // 3. Check Credits
       const availableCredits = bidderData.credits - bidderData.lockedCredits;
