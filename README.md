@@ -106,7 +106,7 @@ flowchart TD
 
 ---
 
-## Demonstration
+## Demonstration Video
 
 [![BidForge Demo](https://img.youtube.com/vi/WDX2_RT7Yy4/maxresdefault.jpg)](https://youtu.be/WDX2_RT7Yy4)
 
