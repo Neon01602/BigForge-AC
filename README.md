@@ -102,7 +102,7 @@ flowchart TD
 |---|---|
 | ![Login](./screenshots/auth.png) | ![Bid Modal](./screenshots/bid-modal.png) |
 
-> 📁 Drop your screenshots into a `/screenshots` folder in the project root and rename them to match the filenames above, or replace the paths with your own.
+
 
 ---
 
