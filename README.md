@@ -102,7 +102,15 @@ flowchart TD
 |---|---|
 | ![Login](./screenshots/auth.png) | ![Bid Modal](./screenshots/bid-modal.png) |
 
-> 📁 More UI Screenshots available in the `/screenshots` directory in 'main'.
+> 📁 Drop your screenshots into a `/screenshots` folder in the project root and rename them to match the filenames above, or replace the paths with your own.
+
+---
+
+## Demonstration
+
+[![BidForge Demo](./screenshots/demo-thumbnail.png)](./demo/bidforge-demo.mp4)
+
+
 
 ---
 
