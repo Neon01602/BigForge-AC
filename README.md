@@ -108,7 +108,7 @@ flowchart TD
 
 ## Demonstration
 
-[![BidForge Demo](./screenshots/demo-thumbnail.png)](./demo/bidforge-demo.mp4)
+[[![BidForge Demo](./screenshots/demo-thumbnail.png)](./demo/bidforge-demo.mp4)](https://youtu.be/WDX2_RT7Yy4)
 
 
 
